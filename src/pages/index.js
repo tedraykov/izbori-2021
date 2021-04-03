@@ -1,106 +1,230 @@
-import * as React from "react"
+import React, { useState, useEffect } from "react"
+import { Bar } from "react-chartjs-2";
 
 // data
-const votes = [
+var votes = [
   {
-    text: "Tutorial",
-    url: "https://www.gatsbyjs.com/docs/tutorial/",
-    description:
-      "A great place to get started if you're new to web development. Designed to guide you through setting up your first Gatsby site.",
-    color: "#E95800",
+    "Партия": "1- \"ВМРО - Българско национално движение\".",
+    "Хартиено": 19,
+    "Машинно": 16,
+    "Общо": 35
   },
   {
-    text: "How to Guides",
-    url: "https://www.gatsbyjs.com/docs/how-to/",
-    description:
-      "Practical step-by-step guides to help you achieve a specific goal. Most useful when you're trying to get something done.",
-    color: "#1099A8",
+    "Партия": "2 - \"Ние, гражданите",
+    "Хартиено": 1,
+    "Машинно": 1,
+    "Общо": 2
   },
   {
-    text: "Reference Guides",
-    url: "https://www.gatsbyjs.com/docs/reference/",
-    description:
-      "Nitty-gritty technical descriptions of how Gatsby works. Most useful when you need detailed information about Gatsby's APIs.",
-    color: "#BC027F",
+    "Партия": "3 - \"Български национален съюз",
+    "Хартиено": 0,
+    "Машинно": 0,
+    "Общо": 0
   },
   {
-    text: "Conceptual Guides",
-    url: "https://www.gatsbyjs.com/docs/conceptual/",
-    description:
-      "Big-picture explanations of higher-level Gatsby concepts. Most useful for building understanding of a particular topic.",
-    color: "#0D96F2",
+    "Партия": "4 - \"БСП за България",
+    "Хартиено": 31,
+    "Машинно": 17,
+    "Общо": 48
   },
   {
-    text: "Plugin Library",
-    url: "https://www.gatsbyjs.com/plugins",
-    description:
-      "Add functionality and customize your Gatsby site or app with thousands of plugins built by our amazing developer community.",
-    color: "#8EB814",
+    "Партия": "5 - \"Възраждане",
+    "Хартиено": 8,
+    "Машинно": 5,
+    "Общо": 13
   },
   {
-    text: "Build and Host",
-    url: "https://www.gatsbyjs.com/cloud",
-    badge: true,
-    description:
-      "Now you’re ready to show the world! Give your Gatsby site superpowers: Build and host on Gatsby Cloud. Get started for free!",
-    color: "#663399",
+    "Партия": "6 - АБВ",
+    "Хартиено": 1,
+    "Машинно": 0,
+    "Общо": 1
   },
-]
+  {
+    "Партия": "7 - \"Атака",
+    "Хартиено": 3,
+    "Машинно": 0,
+    "Общо": 3
+  },
+  {
+    "Партия": "8 - КОД",
+    "Хартиено": 0,
+    "Машинно": 0,
+    "Общо": 0
+  },
+  {
+    "Партия": "9 - ДПС",
+    "Хартиено": 3,
+    "Машинно": 3,
+    "Общо": 6
+  },
+  {
+    "Партия": "10 - \"Българска прогресивна линия",
+    "Хартиено": 0,
+    "Машинно": 0,
+    "Общо": 0
+  },
+  {
+    "Партия": "11 - \"Демократична България",
+    "Хартиено": 26,
+    "Машинно": 26,
+    "Общо": 52
+  },
+  {
+    "Партия": "12 - \"Възраждане на отечеството",
+    "Хартиено": 2,
+    "Машинно": 2,
+    "Общо": 4
+  },
+  {
+    "Партия": "13 - \"Движение заедно за промяната",
+    "Хартиено": 2,
+    "Машинно": 0,
+    "Общо": 2
+  },
+  {
+    "Партия": "14 - \"Българско национално обединение",
+    "Хартиено": 9,
+    "Машинно": 9,
+    "Общо": 18
+  },
+  {
+    "Партия": "15 - \"Нация",
+    "Хартиено": 0,
+    "Машинно": 0,
+    "Общо": 0
+  },
+  {
+    "Партия": "16 - ПП МИР",
+    "Хартиено": 2,
+    "Машинно": 0,
+    "Общо": 2
+  },
+  {
+    "Партия": "17 - Коалиция \"Граждани от протеста",
+    "Хартиено": 0,
+    "Машинно": 0,
+    "Общо": 0
+  },
+  {
+    "Партия": "18 - \"Изправи се! Мутри вън!",
+    "Хартиено": 11,
+    "Машинно": 9,
+    "Общо": 20
+  },
+  {
+    "Партия": "19 - \"Глас народен",
+    "Хартиено": 1,
+    "Машинно": 0,
+    "Общо": 1
+  },
+  {
+    "Партия": "20 - \"Движение на непартийните кандидати",
+    "Хартиено": 1,
+    "Машинно": 0,
+    "Общо": 1
+  },
+  {
+    "Партия": "21 - \"Републиканци за България",
+    "Хартиено": 0,
+    "Машинно": 1,
+    "Общо": 1
+  },
+  {
+    "Партия": "22 - \"Правото",
+    "Хартиено": 0,
+    "Машинно": 0,
+    "Общо": 0
+  },
+  {
+    "Партия": "23 - \"Благоденствие, обединение, градивност",
+    "Хартиено": 0,
+    "Машинно": 0,
+    "Общо": 0
+  },
+  {
+    "Партия": "24 - \"Патриотична коалиция - Воля и НФСБ",
+    "Хартиено": 4,
+    "Машинно": 1,
+    "Общо": 5
+  },
+  {
+    "Партия": "25 - \"Партия на ЗЕЛЕНИТЕ",
+    "Хартиено": 2,
+    "Машинно": 1,
+    "Общо": 3
+  },
+  {
+    "Партия": "26 - \"Общество за нова България",
+    "Хартиено": 0,
+    "Машинно": 0,
+    "Общо": 0
+  },
+  {
+    "Партия": "27 -  \"Български съюз за директна демокрация",
+    "Хартиено": 0,
+    "Машинно": 0,
+    "Общо": 0
+  },
+  {
+    "Партия": "28 - Коалиция \"ГЕРБ - СДС",
+    "Хартиено": 74,
+    "Машинно": 21,
+    "Общо": 95
+  },
+  {
+    "Партия": "29 - \"Има такъв народ",
+    "Хартиено": 50,
+    "Машинно": 46,
+    "Общо": 96
+  },
+  {
+    "Партия": "30 - \"Пряка демокрация",
+    "Хартиено": 0,
+    "Машинно": 0,
+    "Общо": 0
+  }
+].sort((a, b) => b.Общо - a.Общо);
 
-// markup
+
 const IndexPage = () => {
-  return (
-    <main style={pageStyles}>
-      <title>Home Page</title>
-      <h1 style={headingStyles}>
-        Congratulations
-        <br />
-        <span style={headingAccentStyles}>— you just made a Gatsby site! </span>
-        <span role="img" aria-label="Party popper emojis">
-          🎉🎉🎉
-        </span>
-      </h1>
-      <p style={paragraphStyles}>
-        Edit <code style={codeStyles}>src/pages/index.js</code> to see this page
-        update in real-time.{" "}
-        <span role="img" aria-label="Sunglasses smiley emoji">
-          😎
-        </span>
-      </p>
-      <ul style={listStyles}>
-        <li style={docLinkStyle}>
-          <a
-            style={linkStyle}
-            href={`${docLink.url}?utm_source=starter&utm_medium=start-page&utm_campaign=minimal-starter`}
-          >
-            {docLink.text}
-          </a>
-        </li>
-        {links.map(link => (
-          <li key={link.url} style={{ ...listItemStyles, color: link.color }}>
-            <span>
-              <a
-                style={linkStyle}
-                href={`${link.url}?utm_source=starter&utm_medium=start-page&utm_campaign=minimal-starter`}
-              >
-                {link.text}
-              </a>
-              {link.badge && (
-                <span style={badgeStyle} aria-label="New Badge">
-                  NEW!
-                </span>
-              )}
-              <p style={descriptionStyle}>{link.description}</p>
-            </span>
-          </li>
-        ))}
-      </ul>
-      <img
-        alt="Gatsby G Logo"
-        src="data:image/svg+xml,%3Csvg width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 2a10 10 0 110 20 10 10 0 010-20zm0 2c-3.73 0-6.86 2.55-7.75 6L14 19.75c3.45-.89 6-4.02 6-7.75h-5.25v1.5h3.45a6.37 6.37 0 01-3.89 4.44L6.06 9.69C7 7.31 9.3 5.63 12 5.63c2.13 0 4 1.04 5.18 2.65l1.23-1.06A7.959 7.959 0 0012 4zm-8 8a8 8 0 008 8c.04 0 .09 0-8-8z' fill='%23639'/%3E%3C/svg%3E"
-      />
-    </main>
-  )
+    const [whatever, setWhatever] = useState({});
+
+    const chart = () => {
+        setWhatever({
+            labels: votes.map(vote => vote.Партия),
+            datasets: [
+              {
+                label: "Хартиено",
+                data: votes.map(vote => vote.Хартиено),
+                backgroundColor: 'rgb(255, 99, 132)'
+              },
+              {
+                label: "Машинно",
+                data: votes.map(vote => vote.Машинно),
+                backgroundColor: 'rgb(54, 162, 235)'
+              },
+              {
+                label: "Общо",
+                data: votes.map(vote => vote.Общо),
+                backgroundColor: 'rgb(75, 192, 192)'
+              }
+            ]
+        })
+    }
+
+    useEffect(() => {
+        chart()
+    }, [])
+
+    return(
+        <div>
+            <div>
+                <Bar data={whatever}/>
+            </div>
+        </div>
+    )
 }
 
 export default IndexPage
+
+
