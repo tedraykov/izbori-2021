@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react"
-import { Bar } from "react-chartjs-2";
+import { HorizontalBar } from "react-chartjs-2";
 
 // data
-var votes = [
+var reducedVotes = [
   {
     "Партия": "1- \"ВМРО - Българско национално движение\".",
     "Хартиено": 19,
@@ -185,28 +185,51 @@ var votes = [
   }
 ].sort((a, b) => b.Общо - a.Общо);
 
+// var count = votes.reduce((acc, v) => acc + v.Общо, 0);
+// console.log("Общо: " + JSON.stringify(count));
+// var enoughVotesIndex = votes.findIndex(v => (v.Общо / count) < 0.01);
+// var reducedVotes = votes.slice(0, enoughVotesIndex).concat(
+//   {
+//     "Партия": "Други",
+//     "Хартиено": votes.slice(enoughVotesIndex, votes.length).reduce((acc, v) => acc + v.Хартиено, 0),
+//     "Машинно": votes.slice(enoughVotesIndex, votes.length).reduce((acc, v) => acc + v.Машинно, 0),
+//     "Общо": votes.slice(enoughVotesIndex, votes.length).reduce((acc, v) => acc + v.Общо, 0),
+//   });
+
+const options = {
+  maintainAspectRatio: false,
+  scales: {
+    yAxes: [
+      {
+        ticks: {
+          beginAtZero: true,
+        },
+      },
+    ],
+  },
+}
 
 const IndexPage = () => {
     const [whatever, setWhatever] = useState({});
 
     const chart = () => {
         setWhatever({
-            labels: votes.map(vote => vote.Партия),
+            labels: reducedVotes.map(vote => vote.Партия).map(p => p.split()),
             datasets: [
               {
                 label: "Хартиено",
-                data: votes.map(vote => vote.Хартиено),
-                backgroundColor: 'rgb(255, 99, 132)'
+                data: reducedVotes.map(vote => vote.Хартиено),
+                backgroundColor: 'rgb(255, 99, 132)',
               },
               {
                 label: "Машинно",
-                data: votes.map(vote => vote.Машинно),
-                backgroundColor: 'rgb(54, 162, 235)'
+                data: reducedVotes.map(vote => vote.Машинно),
+                backgroundColor: 'rgb(54, 162, 235)',
               },
               {
                 label: "Общо",
-                data: votes.map(vote => vote.Общо),
-                backgroundColor: 'rgb(75, 192, 192)'
+                data: reducedVotes.map(vote => vote.Общо),
+                backgroundColor: 'rgb(75, 192, 192)',
               }
             ]
         })
@@ -219,7 +242,10 @@ const IndexPage = () => {
     return(
         <div>
             <div>
-                <Bar data={whatever}/>
+                <HorizontalBar
+                height={2100}
+                  options={options}
+                  data={whatever}/>
             </div>
         </div>
     )
